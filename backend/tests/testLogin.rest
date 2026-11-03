@@ -1,0 +1,34 @@
+# Testes do login (REST Client).
+
+### teste delogin
+
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",
+    "password": "qwe"
+}
+
+
+
+### teste de login inválido
+
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",
+    "password": "senhaerrada"
+}
+
+
+
+### teste de logout
+
+POST http://localhost:40000/Logout HTTP/1.1
+content-type: application/json
+
+{
+
+}

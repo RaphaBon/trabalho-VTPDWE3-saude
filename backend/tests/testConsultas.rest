@@ -1,0 +1,88 @@
+# Testes de consultas. Rode o login primeiro.
+### Necessário para pegar o token
+### Post
+# @name loginAutenticado
+POST http://localhost:40000/Login HTTP/1.1
+content-type: application/json
+
+{
+    "username": "qwe",
+    "password": "qwe"
+}
+### Seta o token
+# Guarda o token do login para as próximas requisições.
+@accessToken = {{loginAutenticado.response.body.$.token}}
+@username = {{loginAutenticado.response.body.$.username}}
+
+
+
+### teste de inserção de consulta
+POST http://localhost:40000/insertConsulta HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "consultaid": 0,
+    "descricao": "Clínica geral - rotina",
+    "tipo": "P",
+    "valor": 180.00,
+    "dataconsulta": "2026-11-10",
+    "dataretorno": "",
+    "pacienteid": 1,
+    "removido": false
+}
+
+### teste de inserção de consulta com tipo inválido (deve retornar erro do banco)
+POST http://localhost:40000/insertConsulta HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "consultaid": 0,
+    "descricao": "Tipo inválido",
+    "tipo": "X",
+    "valor": 10.00,
+    "dataconsulta": "2026-11-10",
+    "dataretorno": "",
+    "pacienteid": 1,
+    "removido": false
+}
+
+### teste de buscar todas as consultas
+GET http://localhost:40000/getAllConsultas HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+
+}
+
+### teste de buscar consulta por ID
+GET http://localhost:40000/getConsultaByID/1 HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+### teste de buscar pacientes para consultas
+GET http://localhost:40000/getPacientesToConsultas HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+### teste de atualização de consulta
+PUT http://localhost:40000/updateConsulta/4 HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{
+    "descricao": "xClínica geral - rotina",
+    "tipo": "C",
+    "valor": 0.00,
+    "dataconsulta": "2026-11-12",
+    "dataretorno": "2026-12-12",
+    "pacienteid": 2,
+    "removido": false
+}
+
+### teste de remoção de consulta
+DELETE http://localhost:40000/deleteConsulta/4 HTTP/1.1
+content-type: application/json
+Authorization: Bearer {{accessToken}}
